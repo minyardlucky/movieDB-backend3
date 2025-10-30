@@ -10,12 +10,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB Atlas connected successfully!'))
-.catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB Atlas connected successfully!'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 mongoose.connection.once('open', () => {
   console.log(' MongoDB connection established successfully');
