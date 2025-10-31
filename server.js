@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const axios = require('axios');
-const userController = require('./controllers/userController'); // adjust path if needed
+const userController = require('./controllers/userController');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -30,13 +30,13 @@ app.post('/api/users/login', userController.login);
 
 // --- Movies Route ---
 app.get('/api/movies', async (req, res) => {
-  const { s } = req.query;
-  if (!s) return res.status(400).json({ message: 'Search query required' });
+  const search = req.query.s; // get query param "s"
+  if (!search) return res.status(400).json({ message: 'Search query required' });
 
   try {
     const response = await axios.get('http://www.omdbapi.com/', {
       params: {
-        s,
+        s: search,
         apiKey: process.env.OMDB_API_KEY,
       },
     });
