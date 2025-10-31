@@ -23,10 +23,6 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB Atlas connected successfully!'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-mongoose.connection.once('open', () => {
-  console.log('MongoDB connection established successfully');
-});
-
 // --- Define User model ---
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
