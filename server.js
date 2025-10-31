@@ -30,13 +30,13 @@ app.post('/api/users/login', userController.login);
 
 // --- Movies Route ---
 app.get('/api/movies', async (req, res) => {
-  const { search } = req.query;
-  if (!search) return res.status(400).json({ message: 'Search query required' });
+  const { s } = req.query;
+  if (!s) return res.status(400).json({ message: 'Search query required' });
 
   try {
     const response = await axios.get('http://www.omdbapi.com/', {
       params: {
-        s: search,
+        s,
         apiKey: process.env.OMDB_API_KEY,
       },
     });
@@ -45,7 +45,8 @@ app.get('/api/movies', async (req, res) => {
       return res.status(404).json({ message: response.data.Error });
     }
 
-    res.json(response.data.Search); // return array of movies
+    // Return first 10 movies
+    res.json(response.data.Search.slice(0, 10));
   } catch (err) {
     console.error('Error fetching movies:', err.message);
     res.status(500).json({ message: 'Something went wrong fetching movies' });
