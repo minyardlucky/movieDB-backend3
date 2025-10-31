@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const axios = require('axios');
-const userController = require('./controllers/userController');
+const userController = require('./controllers/userController'); // adjust path if needed
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors({
   origin: [
-    'http://localhost:5173',
-    'https://minyardlucky.github.io/MovieDB3'
+    'http://localhost:5173',                // local frontend
+    'https://minyardlucky.github.io/MovieDB3' // deployed frontend
   ],
   credentials: true
 }));
@@ -28,17 +28,15 @@ mongoose.connect(process.env.MONGODB_URI)
 app.post('/api/users/signup', userController.signup);
 app.post('/api/users/login', userController.login);
 
-// --- Movies Route ---//
+// --- Movies Route ---
 app.get('/api/movies', async (req, res) => {
-  const { search } = req.query;
-  if (!search) return res.status(400).json({ message: 'Search query required' });
+  const { s } = req.query;
+  if (!s) return res.status(400).json({ message: 'Search query required' });
 
   try {
-    const response = await axios({
-      method: 'get',
-      url: 'http://www.omdbapi.com/',
+    const response = await axios.get('http://www.omdbapi.com/', {
       params: {
-        s: search,
+        s,
         apiKey: process.env.OMDB_API_KEY,
       },
     });
@@ -47,13 +45,12 @@ app.get('/api/movies', async (req, res) => {
       return res.status(404).json({ message: response.data.Error });
     }
 
-    res.json(response.data.Search); // return array of movies
+    res.json(response.data.Search.slice(0, 10)); // return first 10 movies
   } catch (err) {
     console.error('Error fetching movies:', err.message);
     res.status(500).json({ message: 'Something went wrong fetching movies' });
   }
 });
-
 
 // --- Root Route ---
 app.get('/', (req, res) => {
