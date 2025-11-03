@@ -34,7 +34,7 @@ app.get('/api/movies', async (req, res) => {
   if (!search) return res.status(400).json({ message: 'Search query required' });
 
   try {
-    const response = await axios.get('http://www.omdbapi.com/', {
+    const response = await axios.get('https://www.omdbapi.com/', {
       params: {
         s: search,
         apiKey: process.env.OMDB_API_KEY,
