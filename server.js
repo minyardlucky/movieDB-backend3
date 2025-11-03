@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors({
   origin: [
     'http://localhost:5173',                // local frontend
-    'https://minyardlucky.github.io/MovieDB3' // deployed frontend
+    'https://moviedb3-production.up.railway.app' // deployed frontend
   ],
   credentials: true
 }));
