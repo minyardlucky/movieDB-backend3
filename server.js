@@ -12,8 +12,7 @@ const PORT = process.env.PORT || 8080;
 // --- Middleware ---
 app.use(express.json());
 app.use(cors({
-  origin: [
-    'http://localhost:5173',                // local frontend
+  origin: [               
     'https://moviedb3-production.up.railway.app' // deployed frontend
   ],
   credentials: true
